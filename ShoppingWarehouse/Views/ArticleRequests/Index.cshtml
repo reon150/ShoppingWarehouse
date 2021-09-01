@@ -1,0 +1,111 @@
+﻿@model IEnumerable<ShoppingWarehouse.Data.Entities.ArticleRequest>
+@using ShoppingWarehouse.Constants;
+@using ShoppingWarehouse.Resources.Generic;
+
+@{
+    ViewData["Title"] = @GenericResource.IndexPage;
+}
+
+<h1>@GenericResource.IndexPage</h1>
+
+
+@if (Model.Any())
+{
+    <p>
+        @if (User.IsInRole(Role.Admin))
+        {
+            <a asp-action="Create" class="btn btn-primary">@GenericResource.CreateNewOne</a>
+            <a asp-action="ExportToExcel" class="btn btn-info">@GenericResource.ExportToExcel</a>
+        }
+    </p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form method="get" class="row">
+                <div class="col-12 col-sm pr-sm-0">
+                    <input class="form-control" type="search" placeholder=@GenericResource.Search aria-label=@GenericResource.Search id="query" name="query" />
+                </div>
+                <div class="col-12 col-sm-auto pl-sm-0">
+                    <button class="btn btn-dark btn-block" id="search" type="submit">@GenericResource.Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Article)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastUpdatedDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Article.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastUpdatedDate)
+                    </td>
+                    <td>
+                        @if (User.IsInRole(Role.Admin))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">@GenericResource.Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">@GenericResource.Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@GenericResource.Delete</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">@GenericResource.Details</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (User.IsInRole(Role.Admin))
+{
+    <div class="card col-md-5 mx-auto">
+        <div class="card-body">
+            <h1 class="text-center">@GenericResource.Hello</h1>
+            <p class="lead">@GenericResource.ThereAreNoItemsYet</p>
+            <a asp-action="Create" class="btn btn-block btn-dark">@GenericResource.CreateNewOne</a>
+        </div>
+    </div>
+}
+else
+{
+    <h1>@GenericResource.ThereAreNoItemsToDisplay</h1>
+}

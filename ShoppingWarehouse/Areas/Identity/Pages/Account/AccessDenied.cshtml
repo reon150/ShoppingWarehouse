@@ -1,0 +1,13 @@
+﻿@page
+@model AccessDeniedModel
+
+@using ShoppingWarehouse.Resources.Pages.Account;
+
+@{
+    ViewData["Title"] = @AccountResource.AccessDenied;
+}
+
+<header>
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <p class="text-danger">@AccountResource.YouDoNotHaveAccessToThisResource</p>
+</header>
